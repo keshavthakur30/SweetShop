@@ -1,5 +1,4 @@
-<img width="1908" height="904" alt="image" src="https://github.com/user-attachments/assets/48f193df-bcb3-41bf-a642-fe69f57be3a4" /># Sweet Shop Management System
-
+# Sweet Shop Management System
 A full-stack web application for managing an Indian sweet shop with user authentication, inventory management, and e-commerce functionality.
 
 ## 🍬 Features
