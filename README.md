@@ -150,17 +150,17 @@ A full-stack web application for managing an Indian sweet shop with user authent
 ## 📱 Screenshots
 
 ### Dashboard View
-<img width="1908" height="916" alt="image" src="https://github.com/user-attachments/assets/ed7c9fd1-e22d-412f-bfad-1f12743975e8" />
+<img width="1919" height="922" alt="image" src="https://github.com/user-attachments/assets/e4d74f24-40f3-4141-b28e-4a2ae2ad236d" />
 
 *Browse and search through our collection of Indian sweets*
 
 ### Admin Panel
-<img width="1908" height="904" alt="image" src="https://github.com/user-attachments/assets/e9c16e64-1ad4-455e-9cb7-603df2ea0fbd" />
+<img width="1919" height="909" alt="image" src="https://github.com/user-attachments/assets/523c4166-b44a-4144-b9b9-a6ea32d34d97" />
 
 *Comprehensive inventory management interface*
 
 ### Shopping Cart
-<img width="1911" height="909" alt="image" src="https://github.com/user-attachments/assets/fa19bbf7-6db5-4a5e-a8d6-26fa1ee16d21" />
+<img width="1919" height="907" alt="image" src="https://github.com/user-attachments/assets/80e4e2a1-6d50-47bf-8f3a-c1f3a211e671" />
 
 *Easy-to-use shopping cart with quantity controls*
 
