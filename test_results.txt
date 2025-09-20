@@ -1,0 +1,135 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-7.4.3, pluggy-1.6.0 -- E:\new\incubyte\sweet-shop-system\backend\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: E:\new\incubyte\sweet-shop-system\backend
+plugins: anyio-3.7.1, asyncio-0.21.1
+asyncio: mode=Mode.STRICT
+collecting ... collected 6 items
+
+test_main.py::test_register_user PASSED                                  [ 16%]
+test_main.py::test_login_user PASSED                                     [ 33%]
+test_main.py::test_create_sweet FAILED                                   [ 50%]
+test_main.py::test_get_sweets FAILED                                     [ 66%]
+test_main.py::test_purchase_sweet FAILED                                 [ 83%]
+test_main.py::test_search_sweets FAILED                                  [100%]
+
+================================== FAILURES ===================================
+______________________________ test_create_sweet ______________________________
+
+client = <starlette.testclient.TestClient object at 0x00000213BDA14F90>
+test_user_data = {'email': 'test@example.com', 'password': 'testpassword', 'username': 'testuser'}
+test_sweet_data = {'category': 'Traditional', 'description': 'Soft and spongy milk solid balls soaked in rose flavored sugar syrup', 'name': 'Gulab Jamun', 'price': 150.0, ...}
+
+    def test_create_sweet(client: TestClient, test_user_data, test_sweet_data):
+        """Test creating a sweet (admin only)"""
+        # Register and login
+        client.post("/api/auth/register", json=test_user_data)
+        login_response = client.post("/api/auth/login", json={
+            "username": test_user_data["username"],
+            "password": test_user_data["password"]
+        })
+        token = login_response.json()["access_token"]
+    
+        headers = {"Authorization": f"Bearer {token}"}
+        response = client.post("/api/sweets", json=test_sweet_data, headers=headers)
+>       assert response.status_code == 200
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+test_main.py:85: AssertionError
+_______________________________ test_get_sweets _______________________________
+
+client = <starlette.testclient.TestClient object at 0x00000213BDA14F90>
+test_user_data = {'email': 'test@example.com', 'password': 'testpassword', 'username': 'testuser'}
+test_sweet_data = {'category': 'Traditional', 'description': 'Soft and spongy milk solid balls soaked in rose flavored sugar syrup', 'name': 'Gulab Jamun', 'price': 150.0, ...}
+
+    def test_get_sweets(client: TestClient, test_user_data, test_sweet_data):
+        """Test getting all sweets"""
+        # Register, login, and create a sweet
+        client.post("/api/auth/register", json=test_user_data)
+        login_response = client.post("/api/auth/login", json={
+            "username": test_user_data["username"],
+            "password": test_user_data["password"]
+        })
+        token = login_response.json()["access_token"]
+        headers = {"Authorization": f"Bearer {token}"}
+    
+        client.post("/api/sweets", json=test_sweet_data, headers=headers)
+    
+        # Get all sweets
+        response = client.get("/api/sweets", headers=headers)
+        assert response.status_code == 200
+        data = response.json()
+>       assert len(data) >= 1
+E       assert 0 >= 1
+E        +  where 0 = len([])
+
+test_main.py:107: AssertionError
+_____________________________ test_purchase_sweet _____________________________
+
+client = <starlette.testclient.TestClient object at 0x00000213BDA14F90>
+test_user_data = {'email': 'test@example.com', 'password': 'testpassword', 'username': 'testuser'}
+test_sweet_data = {'category': 'Traditional', 'description': 'Soft and spongy milk solid balls soaked in rose flavored sugar syrup', 'name': 'Gulab Jamun', 'price': 150.0, ...}
+
+    def test_purchase_sweet(client: TestClient, test_user_data, test_sweet_data):
+        """Test purchasing a sweet"""
+        # Setup
+        client.post("/api/auth/register", json=test_user_data)
+        login_response = client.post("/api/auth/login", json={
+            "username": test_user_data["username"],
+            "password": test_user_data["password"]
+        })
+        token = login_response.json()["access_token"]
+        headers = {"Authorization": f"Bearer {token}"}
+    
+        # Create sweet
+        sweet_response = client.post("/api/sweets", json=test_sweet_data, headers=headers)
+>       sweet_id = sweet_response.json()["id"]
+E       KeyError: 'id'
+
+test_main.py:123: KeyError
+_____________________________ test_search_sweets ______________________________
+
+client = <starlette.testclient.TestClient object at 0x00000213BDA14F90>
+test_user_data = {'email': 'test@example.com', 'password': 'testpassword', 'username': 'testuser'}
+test_sweet_data = {'category': 'Traditional', 'description': 'Soft and spongy milk solid balls soaked in rose flavored sugar syrup', 'name': 'Gulab Jamun', 'price': 150.0, ...}
+
+    def test_search_sweets(client: TestClient, test_user_data, test_sweet_data):
+        """Test searching sweets"""
+        # Setup
+        client.post("/api/auth/register", json=test_user_data)
+        login_response = client.post("/api/auth/login", json={
+            "username": test_user_data["username"],
+            "password": test_user_data["password"]
+        })
+        token = login_response.json()["access_token"]
+        headers = {"Authorization": f"Bearer {token}"}
+    
+        client.post("/api/sweets", json=test_sweet_data, headers=headers)
+    
+        # Search by name
+        response = client.get("/api/sweets/search?name=Gulab", headers=headers)
+        assert response.status_code == 200
+        data = response.json()
+>       assert len(data) >= 1
+E       assert 0 >= 1
+E        +  where 0 = len([])
+
+test_main.py:150: AssertionError
+============================== warnings summary ===============================
+database.py:16
+  E:\new\incubyte\sweet-shop-system\backend\database.py:16: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+venv\Lib\site-packages\pydantic\_internal\_config.py:323
+venv\Lib\site-packages\pydantic\_internal\_config.py:323
+  E:\new\incubyte\sweet-shop-system\backend\venv\Lib\site-packages\pydantic\_internal\_config.py:323: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.11/migration/
+    warnings.warn(DEPRECATION_MESSAGE, DeprecationWarning)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED test_main.py::test_create_sweet - assert 403 == 200
+FAILED test_main.py::test_get_sweets - assert 0 >= 1
+FAILED test_main.py::test_purchase_sweet - KeyError: 'id'
+FAILED test_main.py::test_search_sweets - assert 0 >= 1
+=================== 4 failed, 2 passed, 3 warnings in 2.90s ===================
